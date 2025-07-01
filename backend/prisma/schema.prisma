@@ -9,11 +9,13 @@ datasource db {
 
 model Movie {
   id String @id @default(uuid())
-  title String
+  title String @unique
   description String
-  releaseDate DateTime
+  releaseYear Int
   gender String
-  imageURL String
+  director String
+  imageUrl String
+  trailerUrl String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
