@@ -8,8 +8,10 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Filters = () => {
+  const navigate = useNavigate();
   return (
     <div className="p-4 flex flex-col gap-3 md:flex-row md:max-w-[70%] m-auto">
       <div className="border border-muted-foreground rounded-sm flex items-center gap-2 px-2 py-3 flex-1">
@@ -32,7 +34,13 @@ const Filters = () => {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Button className="flex-1" variant="blue">
+        <Button
+          className="flex-1"
+          variant="blue"
+          onClick={() => {
+            navigate("/create");
+          }}
+        >
           <Plus size={16} />
           <span>Adicionar</span>
         </Button>
