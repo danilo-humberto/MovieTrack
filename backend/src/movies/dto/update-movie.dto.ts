@@ -21,6 +21,10 @@ export class UpdateMovieDto {
   @IsOptional()
   director: string;
 
+  @IsInt()
+  @IsOptional()
+  duration: number;
+
   @IsString()
   @IsOptional()
   imageUrl: string;

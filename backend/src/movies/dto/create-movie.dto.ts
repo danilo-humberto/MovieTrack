@@ -27,6 +27,10 @@ export class CreateMovieDto {
   @IsNotEmpty({ message: "O nome do diretor é obrigatório!" })
   director: string;
 
+  @IsInt()
+  @IsNotEmpty({ message: "A duração é obrigatória!" })
+  duration: number;
+
   @IsString()
   @IsNotEmpty({ message: "A url da imagem é obrigatória!" })
   imageUrl: string;

@@ -14,6 +14,7 @@ model Movie {
   releaseYear Int
   gender String
   director String
+  duration Int
   imageUrl String
   trailerUrl String?
   createdAt DateTime @default(now())
