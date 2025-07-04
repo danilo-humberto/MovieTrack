@@ -24,7 +24,7 @@ const Filters = () => {
       </div>
       <div className="flex items-center gap-4 flex-1">
         <Select>
-          <SelectTrigger className="flex-1">
+          <SelectTrigger className="flex-1 bg-transparent">
             <SelectValue placeholder="Gênero" />
           </SelectTrigger>
           <SelectContent>
