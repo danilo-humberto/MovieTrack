@@ -4,6 +4,7 @@ import Home from "./views/home";
 import CreateMovie from "./views/CreateMovie";
 import MovieDetails from "./views/movieDetails";
 import EditMovie from "./views/EditMovie";
+import NotFound from "./views/NotFound";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/create" element={<CreateMovie />} />
         <Route path="/edit" element={<EditMovie />} />
         <Route path="/details" element={<MovieDetails />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
