@@ -1,144 +1,205 @@
-import { useState } from "react";
 import FormInput from "../ui/formInput";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { movieFormSchema } from "@/utils/validationFormData";
 
-const Form = () => {
+type MovieFormErrors = Partial<{
+  name: string;
+  description: string;
+  releaseYear: string;
+  gender: string;
+  director: string;
+  duration: string;
+  imageUrl: string;
+  trailerUrl: string;
+}>;
+
+interface FormProps {
+  labelButton: string;
+}
+
+const Form = ({ labelButton }: FormProps) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
-  const [gender, setGender] = useState<string>();
-  const [otherGender, setOtherGender] = useState<string>();
+  const handleClickButtonCancel = () => {
+    if (pathname === "/create") {
+      navigate("/");
+    } else {
+      window.history.back();
+    }
+  };
+
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    releaseYear: "",
+    gender: "",
+    director: "",
+    duration: "",
+    imageUrl: "",
+    trailerUrl: "",
+  });
+
+  const [errors, setErrors] = useState<MovieFormErrors>({});
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+
+    const result = movieFormSchema.safeParse(formData);
+
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      result.error.issues.forEach((issue) => {
+        fieldErrors[issue.path[0] as string] = issue.message;
+      });
+
+      setErrors(fieldErrors);
+      console.log(fieldErrors);
+      return;
+    }
+  };
   return (
     <form className="flex flex-col gap-4">
-      <FormInput
-        label="Nome"
-        name="name"
-        type="text"
-        placeholder="Insira o nome do filme"
-        value=""
-        onChange={() => {}}
-        required={true}
-      />
+      <div>
+        <FormInput
+          label="Nome"
+          name="name"
+          type="text"
+          placeholder="Nome do filme"
+          value={formData.name}
+          onChange={(e) => {
+            setFormData({ ...formData, name: e.target.value });
+          }}
+        />
+        {errors.name && (
+          <span className="text-red-500 text-sm">{errors.name}</span>
+        )}
+      </div>
       <div className="flex flex-col gap-2">
         <label htmlFor="description" className="text-sm font-semibold">
-          Descrição <span className="text-red-500">*</span>
+          Descrição
         </label>
         <Textarea
-          placeholder="Insira a descrição do filme"
-          required
+          placeholder="Descrição do filme"
           name="description"
+          value={formData.description}
+          onChange={(e) => {
+            setFormData({ ...formData, description: e.target.value });
+          }}
         />
+        {errors.description && (
+          <span className="text-red-500 text-sm">{errors.description}</span>
+        )}
       </div>
-      <div className="flex flex-col md:flex-row gap-4 w-full">
+      <div className="flex flex-col md:flex-row gap-4 w-full flex-wrap">
+        <div>
+          <FormInput
+            label="Diretor"
+            name="director"
+            type="text"
+            placeholder="Nome do diretor do filme"
+            value={formData.director}
+            onChange={(e) => {
+              setFormData({ ...formData, director: e.target.value });
+            }}
+          />
+          {errors.director && (
+            <span className="text-red-500 text-sm">{errors.director}</span>
+          )}
+        </div>
+        <div>
+          <FormInput
+            label="Duração"
+            name="duration"
+            type="string"
+            placeholder="Duração do filme em minutos"
+            value={formData.duration}
+            onChange={(e) => {
+              setFormData({ ...formData, duration: e.target.value });
+            }}
+          />
+          {errors.duration && (
+            <span className="text-red-500 text-sm">{errors.duration}</span>
+          )}
+        </div>
+        <div>
+          <FormInput
+            label="Ano de lançamento"
+            name="releaseYear"
+            type="string"
+            placeholder="2025"
+            value={formData.releaseYear}
+            onChange={(e) => {
+              setFormData({ ...formData, releaseYear: e.target.value });
+            }}
+          />
+          {errors.releaseYear && (
+            <span className="text-red-500 text-sm">{errors.releaseYear}</span>
+          )}
+        </div>
+      </div>
+      <div>
         <FormInput
-          label="Diretor"
-          name="director"
+          label="Genero"
+          name="genre"
           type="text"
-          placeholder="Insira o nome do diretor do filme"
-          value=""
-          onChange={() => {}}
-          required={true}
+          placeholder="Genero do filme"
+          value={formData.gender}
+          onChange={(e) => {
+            setFormData({ ...formData, gender: e.target.value });
+          }}
         />
-        <FormInput
-          label="Duração"
-          name="duration"
-          type="number"
-          placeholder="Insira a duração do filme em minutos"
-          value=""
-          onChange={() => {}}
-          required={true}
-        />
-        <FormInput
-          label="Ano de lançamento"
-          name="releaseYear"
-          type="number"
-          placeholder="2025"
-          value=""
-          onChange={() => {}}
-          required={true}
-        />
+        {errors.gender && (
+          <span className="text-red-500 text-sm">{errors.gender}</span>
+        )}
       </div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="gender" className="text-sm font-semibold">
-          Gênero <span className="text-red-500">*</span>
-        </label>
-        <Select value={gender} onValueChange={setGender}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Selecione o gênero" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="action">Ação</SelectItem>
-              <SelectItem value="comedy">Comédia</SelectItem>
-              <SelectItem value="drama">Drama</SelectItem>
-              <SelectItem value="horror">Terror</SelectItem>
-              <SelectItem value="romance">Romance</SelectItem>
-              <SelectItem value="thriller">Suspense</SelectItem>
-              <SelectItem value="documentary">Documentário</SelectItem>
-              <SelectItem value="adventure">Aventura</SelectItem>
-              <SelectItem value="animation">Animação</SelectItem>
-              <SelectItem value="biography">Biografia</SelectItem>
-              <SelectItem value="crime">Crime</SelectItem>
-              <SelectItem value="fantasy">Fantasia</SelectItem>
-              <SelectItem value="history">História</SelectItem>
-              <SelectItem value="mystery">Mistério</SelectItem>
-              <SelectItem value="other">Outro</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </div>
-      {gender === "other" && (
+      <div>
         <FormInput
-          label="Outro gênero"
-          name="otherGender"
+          label="Poster"
+          name="image"
           type="text"
-          placeholder="Insira o gênero do filme"
-          value={otherGender || ""}
-          onChange={(e) => setOtherGender(e.target.value)}
-          required={true}
+          placeholder="https://exemplo.com/poster.jpg"
+          value={formData.imageUrl}
+          onChange={(e) => {
+            setFormData({ ...formData, imageUrl: e.target.value });
+          }}
         />
-      )}
-      <FormInput
-        label="Poster"
-        name="image"
-        type="text"
-        placeholder="https://exemplo.com/poster.jpg"
-        value=""
-        onChange={() => {}}
-        required={true}
-      />
-      <FormInput
-        label="Trailer"
-        name="trailer"
-        type="text"
-        placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        value=""
-        onChange={() => {}}
-        required={true}
-      />
+        {errors.imageUrl && (
+          <span className="text-red-500 text-sm">{errors.imageUrl}</span>
+        )}
+      </div>
+      <div>
+        <FormInput
+          label="Trailer"
+          name="trailer"
+          type="text"
+          placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          value={formData.trailerUrl}
+          onChange={(e) => {
+            setFormData({ ...formData, trailerUrl: e.target.value });
+          }}
+        />
+        {errors.trailerUrl && (
+          <span className="text-red-500 text-sm">{errors.trailerUrl}</span>
+        )}
+      </div>
       <div className="w-full flex gap-4 mt-4">
         <Button
           variant="default"
           className="flex-1"
           onClick={(e) => {
             e.preventDefault();
-            navigate("/");
+            handleClickButtonCancel();
           }}
         >
           Cancelar
         </Button>
         <a href="/" className="flex-1">
-          <Button variant="blue" className="w-full">
-            Adicionar
+          <Button variant="blue" className="w-full" onClick={handleSubmit}>
+            {labelButton}
           </Button>
         </a>
       </div>
