@@ -36,7 +36,7 @@ const Filters = ({ movies, onGenderChange, onSearchChange }: FiltersProps) => {
   };
   const navigate = useNavigate();
   return (
-    <div className="p-4 flex flex-col gap-3 md:flex-row md:max-w-[70%] m-auto">
+    <div className="p-4 flex flex-col gap-3 md:flex-row md:max-w-[80%] m-auto">
       <div className="border border-muted-foreground rounded-sm flex items-center gap-2 px-2 py-3 flex-1">
         <Search size={16} className="text-muted-foreground" />
         <input
