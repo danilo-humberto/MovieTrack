@@ -7,6 +7,7 @@ import {
 } from "@/api/endpoints";
 import type { Movie } from "@/types/Movie";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 export const useMovies = () =>
   useQuery({
@@ -17,7 +18,16 @@ export const useMovies = () =>
 export const useMovieById = (id: string) =>
   useQuery({
     queryKey: ["movies", id],
-    queryFn: () => getMovieById(id),
+    queryFn: async () => {
+      try {
+        const { data } = await getMovieById(id);
+        return data;
+      } catch (error: any) {
+        if (axios.isAxiosError(error) && error.response?.status === 404)
+          throw new Error("Filme nao encontrado.");
+        throw new Error("Erro ao buscar filme.");
+      }
+    },
     enabled: !!id,
   });
 

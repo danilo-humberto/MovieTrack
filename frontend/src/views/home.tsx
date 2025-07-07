@@ -57,6 +57,7 @@ const Home = () => {
             {paginatedMovies.map((movie: Movie) => (
               <MovieCard
                 key={movie.id}
+                id={movie.id}
                 title={movie.title}
                 releaseYear={movie.releaseYear}
                 gender={movie.gender}

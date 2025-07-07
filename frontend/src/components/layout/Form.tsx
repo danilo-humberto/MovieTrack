@@ -1,9 +1,8 @@
 import FormInput from "../ui/formInput";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { movieFormSchema } from "@/utils/validationFormData";
+import React from "react";
+import { LoaderCircle } from "lucide-react";
 
 type MovieFormErrors = Partial<{
   name: string;
@@ -18,49 +17,32 @@ type MovieFormErrors = Partial<{
 
 interface FormProps {
   labelButton: string;
+  formData: {
+    title: string;
+    description: string;
+    releaseYear: string;
+    gender: string;
+    director: string;
+    duration: string;
+    imageUrl: string;
+    trailerUrl: string;
+  };
+  errors: MovieFormErrors;
+  onChange: (field: string, value: string) => void;
+  onSubmit: (e: React.FormEvent) => void;
+  onCancel: () => void;
+  isPending?: boolean;
 }
 
-const Form = ({ labelButton }: FormProps) => {
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-
-  const handleClickButtonCancel = () => {
-    if (pathname === "/create") {
-      navigate("/");
-    } else {
-      window.history.back();
-    }
-  };
-
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    releaseYear: "",
-    gender: "",
-    director: "",
-    duration: "",
-    imageUrl: "",
-    trailerUrl: "",
-  });
-
-  const [errors, setErrors] = useState<MovieFormErrors>({});
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-
-    const result = movieFormSchema.safeParse(formData);
-
-    if (!result.success) {
-      const fieldErrors: Record<string, string> = {};
-      result.error.issues.forEach((issue) => {
-        fieldErrors[issue.path[0] as string] = issue.message;
-      });
-
-      setErrors(fieldErrors);
-      console.log(fieldErrors);
-      return;
-    }
-  };
+const Form = ({
+  labelButton,
+  formData,
+  errors,
+  onChange,
+  onSubmit,
+  onCancel,
+  isPending = false,
+}: FormProps) => {
   return (
     <form className="flex flex-col gap-4">
       <div>
@@ -69,9 +51,9 @@ const Form = ({ labelButton }: FormProps) => {
           name="name"
           type="text"
           placeholder="Nome do filme"
-          value={formData.name}
+          value={formData.title}
           onChange={(e) => {
-            setFormData({ ...formData, name: e.target.value });
+            onChange("title", e.target.value);
           }}
         />
         {errors.name && (
@@ -87,7 +69,7 @@ const Form = ({ labelButton }: FormProps) => {
           name="description"
           value={formData.description}
           onChange={(e) => {
-            setFormData({ ...formData, description: e.target.value });
+            onChange("description", e.target.value);
           }}
         />
         {errors.description && (
@@ -95,7 +77,7 @@ const Form = ({ labelButton }: FormProps) => {
         )}
       </div>
       <div className="flex flex-col md:flex-row gap-4 w-full flex-wrap">
-        <div>
+        <div className="flex-1">
           <FormInput
             label="Diretor"
             name="director"
@@ -103,14 +85,14 @@ const Form = ({ labelButton }: FormProps) => {
             placeholder="Nome do diretor do filme"
             value={formData.director}
             onChange={(e) => {
-              setFormData({ ...formData, director: e.target.value });
+              onChange("director", e.target.value);
             }}
           />
           {errors.director && (
             <span className="text-red-500 text-sm">{errors.director}</span>
           )}
         </div>
-        <div>
+        <div className="flex-1">
           <FormInput
             label="Duração"
             name="duration"
@@ -118,14 +100,14 @@ const Form = ({ labelButton }: FormProps) => {
             placeholder="Duração do filme em minutos"
             value={formData.duration}
             onChange={(e) => {
-              setFormData({ ...formData, duration: e.target.value });
+              onChange("duration", e.target.value);
             }}
           />
           {errors.duration && (
             <span className="text-red-500 text-sm">{errors.duration}</span>
           )}
         </div>
-        <div>
+        <div className="flex-1">
           <FormInput
             label="Ano de lançamento"
             name="releaseYear"
@@ -133,7 +115,7 @@ const Form = ({ labelButton }: FormProps) => {
             placeholder="2025"
             value={formData.releaseYear}
             onChange={(e) => {
-              setFormData({ ...formData, releaseYear: e.target.value });
+              onChange("releaseYear", e.target.value);
             }}
           />
           {errors.releaseYear && (
@@ -143,13 +125,13 @@ const Form = ({ labelButton }: FormProps) => {
       </div>
       <div>
         <FormInput
-          label="Genero"
-          name="genre"
+          label="Gênero"
+          name="gender"
           type="text"
           placeholder="Genero do filme"
           value={formData.gender}
           onChange={(e) => {
-            setFormData({ ...formData, gender: e.target.value });
+            onChange("gender", e.target.value);
           }}
         />
         {errors.gender && (
@@ -164,7 +146,7 @@ const Form = ({ labelButton }: FormProps) => {
           placeholder="https://exemplo.com/poster.jpg"
           value={formData.imageUrl}
           onChange={(e) => {
-            setFormData({ ...formData, imageUrl: e.target.value });
+            onChange("imageUrl", e.target.value);
           }}
         />
         {errors.imageUrl && (
@@ -179,7 +161,7 @@ const Form = ({ labelButton }: FormProps) => {
           placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           value={formData.trailerUrl}
           onChange={(e) => {
-            setFormData({ ...formData, trailerUrl: e.target.value });
+            onChange("trailerUrl", e.target.value);
           }}
         />
         {errors.trailerUrl && (
@@ -192,16 +174,19 @@ const Form = ({ labelButton }: FormProps) => {
           className="flex-1"
           onClick={(e) => {
             e.preventDefault();
-            handleClickButtonCancel();
+            onCancel();
           }}
         >
           Cancelar
         </Button>
-        <a href="/" className="flex-1">
-          <Button variant="blue" className="w-full" onClick={handleSubmit}>
-            {labelButton}
-          </Button>
-        </a>
+        <Button
+          variant="blue"
+          className="w-full flex-1"
+          onClick={onSubmit}
+          disabled={isPending}
+        >
+          {isPending ? <LoaderCircle className="animate-spin" /> : labelButton}
+        </Button>
       </div>
     </form>
   );

@@ -1,7 +1,7 @@
 import * as z from "zod/v4";
 
 export const movieFormSchema = z.object({
-  name: z
+  title: z
     .string()
     .min(1, "O nome do filme é obrigatório!")
     .max(100, "O nome do filme deve ter no máximo 100 caracteres!"),
@@ -24,21 +24,19 @@ export const movieFormSchema = z.object({
       {
         message: "A duração deve ser um número positivo!",
       }
-    )
-    .transform((value) => Number(value)),
+    ),
   releaseYear: z
     .string()
     .min(1, "O ano de lançamento é obrigatório!")
     .refine(
       (value) => {
         if (!value) return true;
-        return Number(value) >= 1900 && Number(value) > 2050;
+        return Number(value) >= 1900 || Number(value) < 2050;
       },
       {
         message: "Ano inválido!",
       }
-    )
-    .transform(Number),
+    ),
   gender: z
     .string()
     .min(1, "O gênero é obrigatório!")

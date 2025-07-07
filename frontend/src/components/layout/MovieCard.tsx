@@ -3,9 +3,11 @@ import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Separator } from "../ui/separator";
+import { Link } from "react-router-dom";
 
 // LEMBRAR DE VERIFICAR SE TEM IMAGEM, SE NÃO TIVER, USAR UMA IMAGEM PADRÃO
 interface MovieCardProps {
+  id: string | undefined;
   title: string;
   releaseYear: number;
   gender: string;
@@ -14,6 +16,7 @@ interface MovieCardProps {
 }
 
 const MovieCard = ({
+  id,
   title,
   releaseYear,
   gender,
@@ -22,12 +25,12 @@ const MovieCard = ({
 }: MovieCardProps) => {
   return (
     <Card className="relative">
-      <CardContent className="w-full h-full">
+      <CardContent className="w-full h-[400px]">
         <img
           src={imageUrl}
           alt={title}
           onError={(e) => (e.currentTarget.src = "/Image-not-found.png")}
-          className="w-full h-full object-fit brightness-[65%] hover:scale-105 transition-all duration-300 ease-in-out"
+          className="w-full h-full object-fit object-center brightness-[65%] hover:scale-105 transition-all duration-300 ease-in-out"
         />
         <div className="absolute bottom-4 flex flex-col gap-4 text-background px-4 w-full">
           <h2 className="font-semibold text-xl truncate">{title}</h2>
@@ -40,11 +43,11 @@ const MovieCard = ({
                 <span className="text-sm">{formatDuration(duration)}</span>
               </div>
             </div>
-            <a href="/details" className="w-full">
+            <Link to={`/details/${id}`} className="w-full">
               <Button variant="blue" className="py-2 px-4 text-sm w-full">
                 Saber mais
               </Button>
-            </a>
+            </Link>
           </div>
         </div>
       </CardContent>

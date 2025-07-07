@@ -1,5 +1,5 @@
 export type Movie = {
-  id: string;
+  id?: string;
   title: string;
   description: string;
   releaseYear: number;
@@ -7,5 +7,5 @@ export type Movie = {
   director: string;
   duration: number;
   imageUrl: string;
-  trailerUrl: string;
+  trailerUrl?: string;
 };

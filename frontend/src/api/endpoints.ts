@@ -1,3 +1,4 @@
+import type { Movie } from "@/types/Movie";
 import api from "./axios";
 
 export const getMovies = async () => {
@@ -10,7 +11,7 @@ export const getMovieById = async (id: string) => {
   return data;
 };
 
-export const createMovie = async (movie: any) => {
+export const createMovie = async (movie: Movie) => {
   const { data } = await api.post("/movies", movie);
   return data;
 };
