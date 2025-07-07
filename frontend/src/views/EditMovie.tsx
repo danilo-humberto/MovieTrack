@@ -1,4 +1,5 @@
 import Form from "@/components/layout/Form";
+import { Button } from "@/components/ui/button";
 import { useEditMovie, useMovieById } from "@/hooks/useMovies";
 import { movieFormSchema } from "@/utils/validationFormData";
 import { LoaderCircle } from "lucide-react";
@@ -87,16 +88,13 @@ const EditMovie = () => {
     <>
       {isError ? (
         <div className="p-4 w-full md:max-w-[40%] m-auto text-center">
-          <h2 className="font-semibold text-2xl mb-4 text-red-500">Erro</h2>
-          <p className="text-sm text-muted-foreground mb-4">
+          <h2 className="font-semibold text-4xl mb-4 text-red-500">Erro</h2>
+          <p className="text-sm text-ring mb-4">
             O filme não foi encontrado ou o ID é inválido.
           </p>
-          <button
-            onClick={() => navigate("/")}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
+          <Button variant="blue" onClick={() => navigate("/")}>
             Voltar para o início
-          </button>
+          </Button>
         </div>
       ) : (
         <div className="p-4 w-full md:max-w-[40%] m-auto">

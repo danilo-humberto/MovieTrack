@@ -45,7 +45,10 @@ const MovieDetails = () => {
         </div>
       ) : isError ? (
         <div className="flex justify-center items-center mt-20 flex-col gap-4">
-          <p className="text-ring">Filme não encontrado.</p>
+          <p className="font-semibold text-4xl text-red-500">Erro</p>
+          <p className="text-ring">
+            Filme não encontrado ou ocorreu algum erro no sistema.
+          </p>
           <Button variant="blue" onClick={() => navigate("/")}>
             Voltar para o menu
           </Button>
