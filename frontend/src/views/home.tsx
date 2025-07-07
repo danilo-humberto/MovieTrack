@@ -53,7 +53,7 @@ const Home = () => {
             <h2 className="text-muted-foreground">Erro ao carregar filmes.</h2>
           </div>
         ) : paginatedMovies.length > 0 ? (
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4 md:max-w-[70%] m-auto">
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4 md:max-w-[80%] m-auto">
             {paginatedMovies.map((movie: Movie) => (
               <MovieCard
                 key={movie.id}
