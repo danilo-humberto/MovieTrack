@@ -44,10 +44,11 @@ const MovieDetails = () => {
           <LoaderCircle className="animate-spin" />
         </div>
       ) : isError ? (
-        <div className="flex justify-center items-center mt-20">
-          <p className="text-muted-foreground">
-            Erro ao carregar os detalhes do filme.
-          </p>
+        <div className="flex justify-center items-center mt-20 flex-col gap-4">
+          <p className="text-ring">Filme não encontrado.</p>
+          <Button variant="blue" onClick={() => navigate("/")}>
+            Voltar para o menu
+          </Button>
         </div>
       ) : (
         <div className="p-4 flex flex-col gap-6 md:max-w-[70%] mx-auto">
