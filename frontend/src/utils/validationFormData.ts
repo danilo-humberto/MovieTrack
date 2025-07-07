@@ -60,7 +60,7 @@ export const movieFormSchema = z.object({
     ),
   trailerUrl: z
     .string()
-    .min(1, "A url do trailer é obrigatória!")
+    .optional()
     .refine(
       (value) => {
         if (!value) return true;
