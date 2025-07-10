@@ -17,7 +17,7 @@ export class MoviesService {
     try {
       const movie = await this.prisma.movie.create({
         data: {
-          title: dto.title,
+          title: dto.title.toLowerCase().trim(),
           description: dto.description,
           releaseYear: dto.releaseYear,
           gender: dto.gender,
@@ -34,7 +34,7 @@ export class MoviesService {
         error.code === "P2002" &&
         error.message.includes("title")
       ) {
-        throw new ConflictException("O filme ja existe.");
+        throw new ConflictException("Este filme já existe.");
       }
       throw new InternalServerErrorException("Erro ao criar filme.");
     }
