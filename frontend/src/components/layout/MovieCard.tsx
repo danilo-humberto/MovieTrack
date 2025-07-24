@@ -25,7 +25,7 @@ const MovieCard = ({
 }: MovieCardProps) => {
   return (
     <Card className="relative group overflow-hidden">
-      <CardContent className="w-full h-full md:h-[450px]">
+      <CardContent className="w-full h-full">
         <img
           src={imageUrl}
           alt={title}
@@ -37,7 +37,7 @@ const MovieCard = ({
                     transition-all duration-500 ease-in-out translate-y-0 opacity-100
                     md:translate-y-10 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100"
         >
-          <h2 className="font-semibold text-xl truncate">{title}</h2>
+          <h2 className="font-semibold text-xl truncate capitalize">{title}</h2>
           <div className="flex justify-between items-center flex-wrap gap-2">
             <div className="flex gap-2 ">
               <Badge variant="default">{gender}</Badge>
