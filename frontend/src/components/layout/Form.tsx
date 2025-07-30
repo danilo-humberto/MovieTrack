@@ -128,7 +128,7 @@ const Form = ({
           label="Gênero"
           name="gender"
           type="text"
-          placeholder="Genero do filme"
+          placeholder="Gênero do filme"
           value={formData.gender}
           onChange={(e) => {
             onChange("gender", e.target.value);

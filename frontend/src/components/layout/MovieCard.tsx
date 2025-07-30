@@ -34,10 +34,10 @@ const MovieCard = ({
         />
         <div
           className="absolute bottom-4 left-0 px-3 w-full flex flex-col gap-4 text-background 
-                 opacity-100 group-hover:opacity-100 transition-opacity duration-300 
-                 md:opacity-0"
+                    transition-all duration-500 ease-in-out translate-y-0 opacity-100
+                    md:translate-y-10 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100"
         >
-          <h2 className="font-semibold text-xl truncate">{title}</h2>
+          <h2 className="font-semibold text-xl truncate capitalize">{title}</h2>
           <div className="flex justify-between items-center flex-wrap gap-2">
             <div className="flex gap-2 ">
               <Badge variant="default">{gender}</Badge>

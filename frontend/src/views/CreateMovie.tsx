@@ -55,8 +55,15 @@ const CreateMovie = () => {
         toast.success("Filme adicionado com sucesso");
         navigate("/");
       },
-      onError: () => {
-        toast.error("Erro ao adicionar filme");
+      onError: (error: any) => {
+        const message =
+          error?.response?.data?.message || "Erro ao adicionar filme";
+
+        if (message.includes("já existe")) {
+          toast.warning(message);
+        } else {
+          toast.error(message);
+        }
       },
     });
   };
